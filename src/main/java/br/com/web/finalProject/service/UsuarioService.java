@@ -4,17 +4,25 @@ import br.com.web.finalProject.entities.Usuario;
 import br.com.web.finalProject.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UsuarioService {
-
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    // CREATE
     public Usuario criarUsuario(Usuario usuario) {
+        // Codifica a senha ANTES de salvar
+        String senhaCodificada = passwordEncoder.encode(usuario.getPassword());
+        usuario.setSenha(senhaCodificada);
+
         return usuarioRepository.save(usuario);
     }
 
